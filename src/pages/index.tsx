@@ -13,6 +13,7 @@ export default function App() {
   );
   const [autoRefresh, setAutoRefresh] = useState(false);
 
+  //seed book database
   const postBookData = async () => {
     bookData.map(async (book) => {
       await fetch('http://localhost:5000/api/books', {
@@ -25,6 +26,7 @@ export default function App() {
     });
   };
 
+  //seed author database
   const postAuthorData = async () => {
     authorData.map(async (author) => {
       await fetch('http://localhost:5000/api/authors', {
@@ -37,6 +39,7 @@ export default function App() {
     });
   };
 
+  //get seed data or if already seeded get data from local db
   const fetchBookData = async () => {
     if (bookData[0]) {
       await fetch('http://localhost:5000/api/books')
@@ -53,6 +56,7 @@ export default function App() {
     }
   };
 
+  //get seed data or if already seeded get data from local db
   const fetchAuthorData = async () => {
     if (authorData[0]) {
       await fetch('http://localhost:5000/api/authors')
@@ -70,13 +74,19 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchAuthorData()
-      .then(() => fetchBookData())
-      .then(() => postAuthorData())
-      .then(() => postBookData())
-      .then(() => setAutoRefresh(true));
-  }, []);
+    if (!bookData[0] || !authorData[0]) {
+      fetchAuthorData()
+        .then(() => fetchBookData())
+        .then(() => postAuthorData())
+        .then(() => postBookData());
+    } else {
+      postAuthorData()
+        .then(() => postBookData())
+        .then(() => setAutoRefresh(true));
+    }
+  }, [bookData]);
 
+  //auto refresh data
   useEffect(() => {
     const dataRefresh = () => {
       fetchAuthorData().then(() => fetchBookData());
