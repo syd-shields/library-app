@@ -15,20 +15,20 @@ yarn
 
 ## Start local servers
 
-### Next.js Frontend
+### Nest.js Backend
 
 Terminal #1
+
+```bash
+yarn start:dev
+```
+
+### Next.js Frontend
+
+Terminal #2
 
 ```bash
 yarn next dev
 ```
 
 Open in Chrome: "http://localhost:3000/"
-
-### Nest.js Backend
-
-Terminal #2
-
-```bash
-yarn start:dev
-```
