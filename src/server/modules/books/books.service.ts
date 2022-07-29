@@ -22,23 +22,25 @@ export class BooksService {
 
     const existingAuthor = this.authorsService.findById(book.authorId);
 
+    //author should exist
+    if (!existingAuthor && this.books.length) {
+      return 'Author is field is required, check to make sure your author is saved before creating a new book.';
+    }
     if (existingAuthor || (!existingAuthor && !this.books.length)) {
-      //book should have id
+      //book already has an id
       if (book.id) {
         return this.books.push(book);
+        //add id to book if it doesn't exist
       } else if (!book.id && !this.books.length) {
         book.id = '1';
         return this.books.push({ ...book });
+        //add id to book if it doesn't exist
       } else if (!book.id && this.books.length) {
         book.id = (this.books.length + 1).toString();
         return this.books.push({ ...book });
       } else {
         return 'Author is field is required, check to make sure your author is saved before creating a new book.';
       }
-    }
-    if (!existingAuthor && this.books.length) {
-      const authors = this.authorsService.findAll();
-      return 'Author is field is required, check to make sure your author is saved before creating a new book.';
     }
   }
 }

@@ -15,9 +15,9 @@ export class AuthorsService {
   }
 
   create(author: Author) {
-    //check to see if author already exists in the database
+    //reject duplicate authors
     if (this.authors.some((a: Author) => a.name === author.name)) {
-      return HttpException;
+      return 'Author already exists';
       //add id to author if it doesn't exist
     } else if (!author.id && !this.authors.length) {
       author.id = '1';
